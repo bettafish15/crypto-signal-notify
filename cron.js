@@ -1,5 +1,4 @@
 const cron = require('node-cron');
-const express = require('express');
 const fs = require('fs');
 
 cron.schedule('0 0 21 * *', function() {
@@ -10,4 +9,3 @@ cron.schedule('0 0 21 * *', function() {
       console.log('Error file successfully deleted');
     });
   });
-  
