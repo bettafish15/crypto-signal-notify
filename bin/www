@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 
+require('dotenv').config();
 var app = require('../app');
 var debug = require('debug')('crypto-signal-notify:server');
 var http = require('http');
