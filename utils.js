@@ -1,4 +1,4 @@
-function* queryCurrencyCode(currencyArray) {
+function* getCurrencyCode(currencyArray) {
   let i = 0;
   while (true) {
     yield currencyArray[i];
@@ -7,5 +7,5 @@ function* queryCurrencyCode(currencyArray) {
 }
 
 module.exports = {
-    queryCurrencyCode: queryCurrencyCode
+    getCurrencyCode: getCurrencyCode,
 }
