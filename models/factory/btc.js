@@ -20,7 +20,12 @@ module.exports = function (data, candles) {
     };
   }
   const lastCandle = candles[199];
-
+  if(!data){
+    data = {
+      status: null,
+      message: null
+    }
+  }
   if (
     lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
     lastCandle.priceData.closed > lastCandle.ichimokuData.spanB &&
