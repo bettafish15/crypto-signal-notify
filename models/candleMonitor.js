@@ -10,9 +10,13 @@ const result = utils.getCurrencyCode(currencyArray);
 async function candleMonitor() {
   try {
     const currencyCode = result.next().value;
-    const data = await redis.getDataFromKey(currencyCode);
+    const dataRedis = await redis.getDataFromKey(currencyCode);
     const candles = await binance.getBulkCandleData(currencyCode);
-    factory(currencyCode, data, candles);
+    const analyzeData = factory(currencyCode, dataRedis, candles);
+    if(analyzeData){
+      await redis.saveData(currencyCode, analyzeData);
+      telegramBot.sendMessage(process.env.chatId, currencyCode+ ': '+analyzeData);
+    }
 
     return;
   } catch (err) {

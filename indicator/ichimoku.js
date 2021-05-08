@@ -74,8 +74,6 @@ class Ichimoku {
 						base       : parseFloat(baseLine.toFixed(5)),
 						spanA      : parseFloat(spanA.toFixed(5)),
 						spanB      : parseFloat(spanB.toFixed(5)),
-						spanAFuture: parseFloat(spanAs[spanAs.length-1].toFixed(5)),
-						spanBFuture: parseFloat(spanBs[spanBs.length-1].toFixed(5))
 					}
 
 				}

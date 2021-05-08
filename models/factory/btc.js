@@ -18,19 +18,33 @@ module.exports = function (data, candles) {
       priceData: candles[i],
       ichimokuData: ichimokuValue,
     };
-    console.log("candle: "+i);
-    console.log(candles[i]);
   }
-  if (!data) {
-      const lastCandle = candles[198];
-      //console.log(lastCandle);
-    //   const ichimokuDataOfLastCandle = {
-    //       conversion: candles[198],
-    //       base: candles[]
-    //   }
-      if(lastCandle.priceData.closed > lastCandle.conversion && lastCandle.priceData.closed > lastCandle.base){
-
-      }
+  const lastCandle = candles[198];
+  console.log(lastCandle);
+  if (
+    lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
+    lastCandle.priceData.closed > lastCandle.ichimokuData.spanB &&
+    data != "uptrend"
+  ) {
+    // uptrend
+    return "uptrend";
+  } else if (
+    lastCandle.priceData.closed < lastCandle.ichimokuData.spanA &&
+    lastCandle.priceData.closed < lastCandle.ichimokuData.spanB &&
+    data != "downtrend"
+  ) {
+    //downtrend
+    return "downtrend";
+  } else if (
+    ((lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
+      lastCandle.priceData.closed < lastCandle.ichimokuData.spanB) ||
+      (lastCandle.priceData.closed < lastCandle.ichimokuData.spanA &&
+        lastCandle.priceData.closed > lastCandle.ichimokuData.spanB)) &&
+    data != "neutral"
+  ) {
+    // neutral
+    return "neutral";
   } else {
+    return;
   }
 };

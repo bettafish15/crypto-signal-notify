@@ -14,6 +14,16 @@ function getDataFromKey(key) {
   });
 }
 
+function saveData(key, value) {
+  return new Promise((resolve, reject) => {
+    client.set(key, value, (err, res) => {
+      if (err) reject(err);
+      resolve(res);
+    });
+  });
+}
+
 module.exports = {
   getDataFromKey: getDataFromKey,
+  saveData: saveData
 };

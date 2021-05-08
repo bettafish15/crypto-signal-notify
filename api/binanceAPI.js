@@ -1,10 +1,10 @@
 const axios = require("axios");
-const constData = require('../const');
+const constData = require("../const");
 
 async function getBulkCandleData(currencyCode) {
-  const limit = constData.numberOfCandle;
-  currencyCode = currencyCode.split("/").join("");
   try {
+    const limit = constData.numberOfCandle;
+    currencyCode = currencyCode.split("/").join("");
     return await axios
       .get(
         "https://api.binance.com/api/v3/klines?symbol=" +
