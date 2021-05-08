@@ -13,9 +13,12 @@ async function candleMonitor() {
     const dataRedis = await redis.getDataFromKey(currencyCode);
     const candles = await binance.getBulkCandleData(currencyCode);
     const analyzeData = factory(currencyCode, dataRedis, candles);
-    if(analyzeData){
-      await redis.saveData(currencyCode, analyzeData);
-      telegramBot.sendMessage(process.env.chatId, currencyCode+ ': '+analyzeData);
+    if (analyzeData) {
+      await redis.saveData(currencyCode, JSON.stringify(analyzeData));
+      telegramBot.sendMessage(
+        process.env.chatId,
+        analyzeData.message
+      );
     }
 
     return;

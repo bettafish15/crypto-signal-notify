@@ -9,6 +9,7 @@ function getDataFromKey(key) {
   return new Promise((resolve, reject) => {
     client.get(key, (err, res) => {
       if (err) reject(err);
+      res = JSON.parse(res);
       resolve(res);
     });
   });
@@ -25,5 +26,5 @@ function saveData(key, value) {
 
 module.exports = {
   getDataFromKey: getDataFromKey,
-  saveData: saveData
+  saveData: saveData,
 };

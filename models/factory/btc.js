@@ -19,31 +19,40 @@ module.exports = function (data, candles) {
       ichimokuData: ichimokuValue,
     };
   }
-  const lastCandle = candles[198];
-  console.log(lastCandle);
+  const lastCandle = candles[199];
+
   if (
     lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
     lastCandle.priceData.closed > lastCandle.ichimokuData.spanB &&
-    data != "uptrend"
+    data.status != "uptrend"
   ) {
     // uptrend
-    return "uptrend";
+    return {
+      status: "uptrend",
+      message: "btc is uptrend"
+    };
   } else if (
     lastCandle.priceData.closed < lastCandle.ichimokuData.spanA &&
     lastCandle.priceData.closed < lastCandle.ichimokuData.spanB &&
-    data != "downtrend"
+    data.status != "downtrend"
   ) {
     //downtrend
-    return "downtrend";
+    return {
+      status: "downtrend",
+      message: "btc is downtrend"
+    };
   } else if (
     ((lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
       lastCandle.priceData.closed < lastCandle.ichimokuData.spanB) ||
       (lastCandle.priceData.closed < lastCandle.ichimokuData.spanA &&
         lastCandle.priceData.closed > lastCandle.ichimokuData.spanB)) &&
-    data != "neutral"
+    data.status != "neutral"
   ) {
     // neutral
-    return "neutral";
+    return {
+      status: "neutral",
+      message: "btc is neutral"
+    };
   } else {
     return;
   }
