@@ -20,44 +20,37 @@ module.exports = function (data, candles) {
     };
   }
   const lastCandle = candles[199];
-  if(!data){
-    data = {
-      status: null,
-      message: null
-    }
-  }
-  if (
-    lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
-    lastCandle.priceData.closed > lastCandle.ichimokuData.spanB &&
-    data.status != "uptrend"
-  ) {
-    // uptrend
-    return {
-      status: "uptrend",
-      message: "btc is uptrend"
-    };
-  } else if (
-    lastCandle.priceData.closed < lastCandle.ichimokuData.spanA &&
-    lastCandle.priceData.closed < lastCandle.ichimokuData.spanB &&
-    data.status != "downtrend"
-  ) {
-    //downtrend
-    return {
-      status: "downtrend",
-      message: "btc is downtrend"
-    };
-  } else if (
-    ((lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
-      lastCandle.priceData.closed < lastCandle.ichimokuData.spanB) ||
+  if (!data) {
+    if (
+      lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
+      lastCandle.priceData.closed > lastCandle.ichimokuData.spanB
+    ) {
+      // uptrend
+      return {
+        status: "uptrend",
+        message: "btc is uptrend",
+      };
+    } else if (
+      lastCandle.priceData.closed < lastCandle.ichimokuData.spanA &&
+      lastCandle.priceData.closed < lastCandle.ichimokuData.spanB
+    ) {
+      //downtrend
+      return {
+        status: "downtrend",
+        message: "btc is downtrend",
+      };
+    } else if (
+      (lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
+        lastCandle.priceData.closed < lastCandle.ichimokuData.spanB) ||
       (lastCandle.priceData.closed < lastCandle.ichimokuData.spanA &&
-        lastCandle.priceData.closed > lastCandle.ichimokuData.spanB)) &&
-    data.status != "neutral"
-  ) {
-    // neutral
-    return {
-      status: "neutral",
-      message: "btc is neutral"
-    };
+        lastCandle.priceData.closed > lastCandle.ichimokuData.spanB)
+    ) {
+      // neutral
+      return {
+        status: "neutral",
+        message: "btc is neutral",
+      };
+    }
   } else {
     return;
   }

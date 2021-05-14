@@ -14,14 +14,14 @@ async function candleMonitor() {
     const candles = await binance.getBulkCandleData(currencyCode);
     const analyzeData = factory(currencyCode, dataRedis, candles);
     if (analyzeData) {
-      await redis.saveData(currencyCode, JSON.stringify(analyzeData));
-      telegramBot.sendMessage(
-        process.env.chatId,
-        analyzeData.message
-      );
+      let dataFromRedis = await redis.getCurrencyConfig(currencyCode);
+      const timeNotify =
+        dataFromRedis && dataFromRedis.timeNotify
+          ? dataFromRedis.timeNotify
+          : 1;
+      await redis.saveData(currencyCode, analyzeData, Number(timeNotify));
+      telegramBot.sendMessage(process.env.chatId, analyzeData.message);
     }
-
-    return;
   } catch (err) {
     console.error(err);
   }

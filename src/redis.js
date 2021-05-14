@@ -15,10 +15,30 @@ function getDataFromKey(key) {
   });
 }
 
-function saveData(key, value) {
+function saveData(key, value, ttl = undefined) {
   return new Promise((resolve, reject) => {
-    client.set(key, value, (err, res) => {
+    if (ttl) {
+      client.set(key, JSON.stringify(value), "EX", ttl, (err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      });
+    } else {
+      client.set(key, JSON.stringify(value), (err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      });
+    }
+  });
+}
+
+function getCurrencyConfig(currency) {
+  return new Promise((resolve, reject) => {
+    client.get('config.'+currency, (err, res) => {
       if (err) reject(err);
+      res = JSON.parse(res);
+      if(!res){
+        res = {};
+      }
       resolve(res);
     });
   });
@@ -27,4 +47,5 @@ function saveData(key, value) {
 module.exports = {
   getDataFromKey: getDataFromKey,
   saveData: saveData,
+  getCurrencyConfig: getCurrencyConfig,
 };
