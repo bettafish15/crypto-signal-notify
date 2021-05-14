@@ -18,7 +18,7 @@ async function candleMonitor() {
       const timeNotify =
         dataFromRedis && dataFromRedis.timeNotify
           ? dataFromRedis.timeNotify
-          : 1;
+          : 900;
       await redis.saveData(currencyCode, analyzeData, Number(timeNotify));
       telegramBot.sendMessage(process.env.chatId, analyzeData.message);
     }
