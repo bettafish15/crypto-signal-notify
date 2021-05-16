@@ -1,22 +1,17 @@
 const axios = require("axios");
-const constData = require("../const");
-const redis = require("../redis");
+const config = require("../config");
 
-async function getBulkCandleData(currencyCode) {
+async function getBulkCandleData(currencyCode, configCurrencyDataRedis) {
   try {
-    const dataFromRedis = await redis.getDataFromKey("config." + currencyCode);
-    const interval =
-      dataFromRedis && dataFromRedis.interval ? dataFromRedis.interval : "1h";
-    const limit = constData.numberOfCandle;
     currencyCodeForBinance = currencyCode.split("/").join("");
     return await axios
       .get(
         "https://api.binance.com/api/v3/klines?symbol=" +
           currencyCodeForBinance +
           "&interval=" +
-          interval +
+          configCurrencyDataRedis.interval +
           "&limit=" +
-          limit
+          config.numberOfCandle
       )
       .then((response) => {
         const result = [];

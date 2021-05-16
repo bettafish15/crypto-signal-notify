@@ -1,6 +1,6 @@
 const Ichimoku = require("../../indicator").Ichimoku;
 
-module.exports = function (data, candles) {
+module.exports = function (candles) {
   const ichimoku = new Ichimoku({
     conversionPeriod: 9,
     basePeriod: 26,
@@ -20,38 +20,38 @@ module.exports = function (data, candles) {
     };
   }
   const lastCandle = candles[199];
-  if (!data) {
-    if (
-      lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
-      lastCandle.priceData.closed > lastCandle.ichimokuData.spanB
-    ) {
-      // uptrend
-      return {
-        status: "uptrend",
-        message: "btc is uptrend",
-      };
-    } else if (
-      lastCandle.priceData.closed < lastCandle.ichimokuData.spanA &&
-      lastCandle.priceData.closed < lastCandle.ichimokuData.spanB
-    ) {
-      //downtrend
-      return {
-        status: "downtrend",
-        message: "btc is downtrend",
-      };
-    } else if (
-      (lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
-        lastCandle.priceData.closed < lastCandle.ichimokuData.spanB) ||
-      (lastCandle.priceData.closed < lastCandle.ichimokuData.spanA &&
-        lastCandle.priceData.closed > lastCandle.ichimokuData.spanB)
-    ) {
-      // neutral
-      return {
-        status: "neutral",
-        message: "btc is neutral",
-      };
-    }
-  } else {
-    return;
+  let result;
+
+  if (
+    lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
+    lastCandle.priceData.closed > lastCandle.ichimokuData.spanB
+  ) {
+    // uptrend
+    result = {
+      status: "uptrend",
+      message: "btc is uptrend",
+    };
+  } else if (
+    lastCandle.priceData.closed < lastCandle.ichimokuData.spanA &&
+    lastCandle.priceData.closed < lastCandle.ichimokuData.spanB
+  ) {
+    //downtrend
+    result = {
+      status: "downtrend",
+      message: "btc is downtrend",
+    };
+  } else if (
+    (lastCandle.priceData.closed > lastCandle.ichimokuData.spanA &&
+      lastCandle.priceData.closed < lastCandle.ichimokuData.spanB) ||
+    (lastCandle.priceData.closed < lastCandle.ichimokuData.spanA &&
+      lastCandle.priceData.closed > lastCandle.ichimokuData.spanB)
+  ) {
+    // neutral
+    result = {
+      status: "neutral",
+      message: "btc is neutral",
+    };
   }
+
+  return result;
 };

@@ -33,12 +33,21 @@ function saveData(key, value, ttl = undefined) {
 
 function getCurrencyConfig(currency) {
   return new Promise((resolve, reject) => {
-    client.get('config.'+currency, (err, res) => {
+    client.get("config." + currency, (err, res) => {
       if (err) reject(err);
       res = JSON.parse(res);
-      if(!res){
+      if (!res) {
         res = {};
       }
+      resolve(res);
+    });
+  });
+}
+
+function saveCurrencyConfig(currency, value) {
+  return new Promise((resolve, reject) => {
+    client.set("config." + currency, JSON.stringify(value), (err, res) => {
+      if (err) reject(err);
       resolve(res);
     });
   });
@@ -48,4 +57,5 @@ module.exports = {
   getDataFromKey: getDataFromKey,
   saveData: saveData,
   getCurrencyConfig: getCurrencyConfig,
+  saveCurrencyConfig: saveCurrencyConfig
 };

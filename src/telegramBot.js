@@ -18,11 +18,11 @@ bot.onText(/\/setInterval (.+)/, async (msg, match) => {
       return;
     }
 
-    let dataFromRedis = await redis.getCurrencyConfig(currencyCode);
-    dataFromRedis.interval = interval;
-    redis.saveData("config." + currencyCode, dataFromRedis);
+    let configCurrencyDataRedis = await redis.getCurrencyConfig(currencyCode);
+    configCurrencyDataRedis.interval = interval;
+    const result = await redis.saveCurrencyConfig(currencyCode, configCurrencyDataRedis);
 
-    bot.sendMessage(chatId, resp);
+    bot.sendMessage(chatId, result);
   } catch (err) {
     console.error(err);
   }
@@ -38,11 +38,40 @@ bot.onText(/\/setTimeNotify (.+)/, async (msg, match) => {
       bot.sendMessage(chatId, "format is wrong");
       return;
     }
-    let dataFromRedis = await redis.getCurrencyConfig(currencyCode);
-    dataFromRedis.timeNotify = timeNotify;
-    redis.saveData("config." + currencyCode, dataFromRedis);
+    let configCurrencyDataRedis = await redis.getCurrencyConfig(currencyCode);
+    configCurrencyDataRedis.timeNotify = timeNotify;
+    const result = await redis.saveCurrencyConfig(currencyCode, configCurrencyDataRedis);
 
-    bot.sendMessage(chatId, resp);
+    bot.sendMessage(chatId, result);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+bot.onText(/\/setMonitorMode (.+)/, async (msg, match) => {
+  try {
+    const chatId = msg.chat.id;
+    const resp = match[1];
+    const currencyCode = resp.split(" ")[0];
+    const monitorMode = resp.split(" ")[1];
+    if (!monitorMode || !constData.currencyArray.includes(currencyCode)) {
+      bot.sendMessage(chatId, "format is wrong");
+      return;
+    }
+    let configCurrencyDataRedis = await redis.getCurrencyConfig(currencyCode);
+    configCurrencyDataRedis.monitorMode = monitorMode;
+    const result = await redis.saveCurrencyConfig(currencyCode, configCurrencyDataRedis);
+
+    bot.sendMessage(chatId, result);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+bot.onText(/\/help/, () => {
+  try {
+    const message = `/setInterval [currencyCode] [intervalTime] \n /setTimeNotify [currencyCode] [timeNotify] \n /setMonitorMode [currencyCode] [mode]`;
+    bot.sendMessage(chatId, message);
   } catch (err) {
     console.error(err);
   }
