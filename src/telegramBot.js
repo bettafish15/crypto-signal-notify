@@ -70,7 +70,12 @@ bot.onText(/\/setMonitorMode (.+)/, async (msg, match) => {
 
 bot.onText(/\/help/, () => {
   try {
-    const message = `/setInterval [currencyCode] [intervalTime] \n /setTimeNotify [currencyCode] [timeNotify] \n /setMonitorMode [currencyCode] [mode]`;
+    const message = `/setInterval [currencyCode] [intervalTime] 
+/setTimeNotify [currencyCode] [timeNotify]
+/setMonitorMode [currencyCode] [mode]
+currencyCode ${constData.currencyArray}
+intervalTime 
+[1m 3m 5m 15m 30m 1h 2h 4h 6h 8h 12h 1d 3d 1w 1M]`;
     bot.sendMessage(chatId, message);
   } catch (err) {
     console.error(err);
